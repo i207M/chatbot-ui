@@ -1,0 +1,23 @@
+name: Merge upstream branches
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '15 3 * * *'
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Merge upstream
+        run: |
+          git config --global user.name 'i207m'
+          git config --global user.email 'i207m@users.noreply.github.com'
+
+          git remote add upstream https://github.com/mckaywrigley/chatbot-ui.git
+          git fetch upstream
+
+          git checkout main
+          git merge --no-edit upstream/main
+          git push origin main
